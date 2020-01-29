@@ -1,0 +1,57 @@
+<section class="hero is-info welcome is-small">
+      <div class="hero-body">
+          <div class="container">
+              <h1 class="title">
+                  RPC calls
+              </h1>
+              <h2 class="subtitle">
+
+              </h2>
+          </div>
+      </div>
+  </section>
+  <section class="info-tiles">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+                <div class="field">
+                  <label class="label">Method</label>
+                  <div class="control">
+                    <div class="select">
+                      <select (change)="selectRpcMethod($event)">
+                        <option *ngFor="let method of rpcMethods" [value]="method">{{ method }}</option>
+                      </select>
+                    </div>
+                </div>
+               <div class="field" *ngFor="let param of rpcParams">
+                    <label class="label">{{ param.name }}</label>
+                    <div class="control">
+                      <input *ngIf="param.type == 'string' || param.type == 'BlockHashOrId'" class="input" type="text" [(ngModel)]="param.value">
+                      <textarea *ngIf="param.type == 'dict' || param.type == 'array'" class="textarea" (change)="updateParamValue($event, param)">{{ param.value | json }}</textarea>
+                    </div>
+                  </div>
+                  <div class="field is-grouped">
+                    <div class="control">
+                      <button class="button is-link" (click)="submitCall()">Submit RPC call</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  <section class="info-tiles" *ngIf="result">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+              <div class="field">
+                  <label class="label">Result</label>
+                  <div class="control">
+                    <textarea class="textarea result" placeholder="">{{ result | json }}</textarea>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+

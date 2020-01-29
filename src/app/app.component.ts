@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'substrate-interface-gui';
+  title = 'Polkascan Substrate Interface';
+
+  public showNavigation = false;
+
+  toggleNavigation() {
+    this.showNavigation = !this.showNavigation;
+  }
 }
