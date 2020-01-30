@@ -7,14 +7,16 @@ import { RpcCallsComponent } from './pages/rpc-calls/rpc-calls.component';
 import { ExtrinsicsComponent } from './pages/extrinsics/extrinsics.component';
 import { ChainStateComponent } from './pages/chain-state/chain-state.component';
 import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from "@angular/forms";
+import {FormsModule} from '@angular/forms';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RpcCallsComponent,
     ExtrinsicsComponent,
-    ChainStateComponent
+    ChainStateComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

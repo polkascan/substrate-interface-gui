@@ -10,9 +10,7 @@ import {isNumeric} from 'rxjs/internal-compatibility';
 })
 export class ChainStateComponent implements OnInit {
 
-  public modules = [];
   public storageFunctions = [];
-  public selectedModule;
   public selectedStorageFunction;
   public selectedBlockHashOrId = null;
   public result: string;

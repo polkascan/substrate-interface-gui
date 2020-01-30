@@ -10,14 +10,49 @@
           </div>
       </div>
   </section>
-  <section class="info-tiles">
+  <section class="main-content">
     <div class="card">
         <div class="card-table">
             <div class="content content-container">
-
+                <div class="field">
+                  <label class="label">Call function</label>
+                  <div class="control">
+                    <div class="select">
+                      <select (change)="selectCallFunction($event)" [(ngModel)]="selectedCallFunction">
+                        <option *ngFor="let callFunction of callFunctions" [ngValue]="callFunction">
+                          {{ callFunction.module_name }} &raquo; {{ callFunction.call_name }}
+                        </option>
+                      </select>
+                    </div>
+                </div>
+                <div class="field" *ngFor="let param of rpcParams">
+                  <label class="label">{{ param.name }} ({{param.type}})</label>
+                  <div class="control">
+                    <textarea class="textarea" (change)="updateParamValue($event, param)">{{ param.value ? (param.value | json) : ''}}</textarea>
+                  </div>
+                </div>
+                  <div class="field is-grouped">
+                    <div class="control">
+                      <button class="button is-link" (click)="composeCall()">Compose call</button>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
   </section>
-
+  <section class="main-content" *ngIf="result">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+              <div class="field">
+                  <label class="label">Result</label>
+                  <div class="control">
+                    <textarea class="textarea result" placeholder="">{{ result | json }}</textarea>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
 

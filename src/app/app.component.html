@@ -1,7 +1,7 @@
 <nav class="navbar is-white">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item brand-text" routerLink="">
+                <a class="navbar-item brand-text" routerLink="/">
                   <img src="assets/logo-light.png" height="30"> <div class="sub-title">Polkascan Substrate Interface</div>
                 </a>
                 <div class="navbar-burger burger" data-target="navMenu" [ngClass]="{'is-active': showNavigation}" (click)="toggleNavigation()">
@@ -12,14 +12,14 @@
             </div>
             <div id="navMenu" class="navbar-menu" [ngClass]="{'is-active': showNavigation}">
                 <div class="navbar-start">
-                    <a class="navbar-item" routerLink="/rpc-calls">
-                      RPC calls
+                    <a class="navbar-item" routerLink="/rpc-calls" routerLinkActive="is-active">
+                      <span class="icon"><i class="fa fa-download"></i></span> RPC calls
                     </a>
-                    <a class="navbar-item" routerLink="/chain-state">
-                      Chain state
+                    <a class="navbar-item" routerLink="/chain-state" routerLinkActive="is-active">
+                      <span class="icon"><i class="fa fa-database"></i></span> Chain state
                     </a>
-                    <a class="navbar-item" routerLink="/extrinsics">
-                      Extrinsics
+                    <a class="navbar-item" routerLink="/extrinsics" routerLinkActive="is-active">
+                      <span class="icon"><i class="fa fa-file-alt"></i></span> Extrinsics
                     </a>
                 </div>
 
