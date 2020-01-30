@@ -19,21 +19,27 @@
                   <div class="control">
                     <div class="select">
                       <select (change)="selectRpcMethod($event)">
-                        <option *ngFor="let method of rpcMethods" [value]="method">{{ method }}</option>
+                        <option *ngFor="let method of rpcMethods" [value]="method"><span *ngIf="isNewRpcMethod(method)"> 🆕 </span>{{ method }}</option>
                       </select>
                     </div>
-                </div>
-               <div class="field" *ngFor="let param of rpcParams">
-                    <label class="label">{{ param.name }}</label>
-                    <div class="control">
-                      <input *ngIf="param.type == 'string' || param.type == 'BlockHashOrId'" class="input" type="text" [(ngModel)]="param.value">
-                      <textarea *ngIf="param.type == 'dict' || param.type == 'array'" class="textarea" (change)="updateParamValue($event, param)">{{ param.value | json }}</textarea>
-                    </div>
                   </div>
-                  <div class="field is-grouped">
-                    <div class="control">
-                      <button class="button is-link" (click)="submitCall()">Submit RPC call</button>
-                    </div>
+                </div>
+                <div class="field is-grouped" *ngIf="!isNewRpcMethod(selectedRpcMethod)">
+                  <div class="control">
+                    <button class="button is-link" (click)="addParameter()">
+                      <span class="icon"><i class="fas fa-plus"></i></span><span>Add parameter</span></button>
+                  </div>
+                </div>
+                <div class="field" *ngFor="let param of rpcParams">
+                  <label class="label">{{ param.name }}</label>
+                  <div class="control">
+                    <input *ngIf="param.type == 'string' || param.type == 'BlockHashOrId'" class="input" type="text" [(ngModel)]="param.value">
+                    <textarea *ngIf="param.type == 'dict' || param.type == 'array'" class="textarea" (change)="updateParamValue($event, param)">{{ param.value | json }}</textarea>
+                  </div>
+                </div>
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button class="button is-link" (click)="submitCall()">Submit RPC call</button>
                   </div>
                 </div>
             </div>

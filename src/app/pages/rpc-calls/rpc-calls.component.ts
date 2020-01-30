@@ -18,7 +18,7 @@ export class RpcCallsComponent implements OnInit {
 
   ngOnInit() {
     this.substrateApiService.getRpcMethods().subscribe(data => {
-      this.rpcMethods = data.result.methods.filter(value => value.startsWith('runtime_'));
+      this.rpcMethods = data.result.methods;
       this.selectedRpcMethod = this.rpcMethods[0];
       this.updateParamFields();
     });
@@ -98,10 +98,19 @@ export class RpcCallsComponent implements OnInit {
     }
   }
 
+  isNewRpcMethod(value) {
+    return !value || value.startsWith('runtime_');
+  }
+
   selectRpcMethod(e) {
     this.selectedRpcMethod = e.target.value;
+
     this.result = null;
     this.updateParamFields();
+  }
+
+  addParameter() {
+    this.rpcParams.push({type: 'string', name: 'Parameter ' + (this.rpcParams.length + 1), value: null});
   }
 
   submitCall() {

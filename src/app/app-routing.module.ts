@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'rpc-calls', component: RpcCallsComponent},
   { path: 'chain-state', component: ChainStateComponent },
-  { path: 'extrinsics', component: ExtrinsicsComponent }
+  { path: 'compose-call', component: ExtrinsicsComponent }
 ];
 
 @NgModule({
