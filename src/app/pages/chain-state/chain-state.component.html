@@ -24,6 +24,13 @@
                         </option>
                       </select>
                     </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    {{ selectedStorageFunction.documentation }}
+                  </div>
                 </div>
                 <div class="field" *ngFor="let param of rpcParams">
                   <label class="label">{{ param.name }}</label>
@@ -43,7 +50,6 @@
                       <button class="button is-link" (click)="submitStorageCall()">Retrieve Chain State</button>
                     </div>
                   </div>
-                </div>
             </div>
         </div>
     </div>

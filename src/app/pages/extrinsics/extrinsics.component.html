@@ -25,6 +25,12 @@
                       </select>
                     </div>
                 </div>
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    {{ selectedCallFunction.documentation }}
+                  </div>
+                </div>
                 <div class="field" *ngFor="let param of rpcParams">
                   <label class="label">{{ param.name }} ({{param.type}})</label>
                   <div class="control">
