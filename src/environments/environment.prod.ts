@@ -1,4 +1,5 @@
+// @ts-ignore
 export const environment = {
   production: true,
-  substrateApiUrl: 'http://127.0.0.1:8080/rpc/'
+  substrateApiUrl: $ENV.SUBSTRATE_API_URL
 };

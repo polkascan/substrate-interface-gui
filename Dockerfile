@@ -14,6 +14,9 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
+ARG SUBSTRATE_API_URL=http://127.0.0.1:8080/rpc/
+ENV SUBSTRATE_API_URL=$SUBSTRATE_API_URL
+
 RUN npm run ng build -- --prod --output-path=dist
 
 
