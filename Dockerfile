@@ -3,6 +3,9 @@
 # We label our stage as ‘builder’
 FROM node:10-alpine as builder
 
+# Install Python and other dependencies via apk
+RUN apk update && apk add python g++ make && rm -rf /var/cache/apk/*
+
 COPY package.json package-lock.json ./
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
