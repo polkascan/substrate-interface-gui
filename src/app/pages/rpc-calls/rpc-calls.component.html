@@ -10,6 +10,11 @@
           </div>
       </div>
   </section>
+  <article class="message is-danger" *ngIf="errorMessage">
+    <div class="message-body">
+      {{errorMessage}}
+    </div>
+  </article>
   <section class="main-content">
     <div class="card">
         <div class="card-table">

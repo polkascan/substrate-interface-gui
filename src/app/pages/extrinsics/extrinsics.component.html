@@ -2,7 +2,7 @@
       <div class="hero-body">
           <div class="container">
               <h1 class="title">
-                  Compose Call
+                  Create Extrinsic
               </h1>
               <h2 class="subtitle">
 
@@ -10,7 +10,36 @@
           </div>
       </div>
   </section>
+  <article class="message is-success" *ngIf="extrinsicHash">
+    <div class="message-body">
+      Extrinsic submitted with hash: <a target="_blank" href="https://polkascan.io/kusama/transaction/{{ extrinsicHash }}">{{extrinsicHash}}</a>
+    </div>
+  </article>
+  <article class="message is-danger" *ngIf="errorMessage">
+    <div class="message-body">
+      {{errorMessage}}
+    </div>
+  </article>
   <section class="main-content">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+                <div class="field">
+                  <label class="label">Current account</label>
+                  <div class="control">
+                    <div class="current-account">{{ currentAccount?.ss58Address }}</div>
+                    <button class="button is-link" *ngIf="!enableAddressScanner" (click)="startScanning()">Scan new address</button>
+                    <button class="button is-link" *ngIf="enableAddressScanner" (click)="cancelScanning()">Cancel</button>
+                    <div class="scanner-container">
+                      <app-polkascan-signer-address *ngIf="enableAddressScanner" (accountScanned)="onAddressScanned($event)" [device]="currentDevice" (camerasFound)="onCamerasFound($event)"></app-polkascan-signer-address>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  <section class="main-content" *ngIf="!result && !enableSignatureScanner">
     <div class="card">
         <div class="card-table">
             <div class="content content-container">
@@ -27,8 +56,8 @@
                 </div>
                 <div class="field">
                   <label class="label">Description</label>
-                  <div class="control">
-                    {{ selectedCallFunction.documentation }}
+                  <div class="control doc">
+                    {{ selectedCallFunction?.documentation }}
                   </div>
                 </div>
                 <div class="field" *ngFor="let param of rpcParams">
@@ -39,7 +68,7 @@
                 </div>
                   <div class="field is-grouped">
                     <div class="control">
-                      <button class="button is-link" (click)="composeCall()">Compose call</button>
+                      <button class="button is-link" (click)="requestSignaturePayload()">Sign extrinsic</button>
                     </div>
                   </div>
                 </div>
@@ -52,13 +81,23 @@
         <div class="card-table">
             <div class="content content-container">
               <div class="field">
-                  <label class="label">Result</label>
+                  <label class="label">Scan QR with Parity Signer</label>
                   <div class="control">
-                    <textarea class="textarea result" placeholder="">{{ result | json }}</textarea>
+                    <app-polkascan-signer-extrinsic-qr [account]="currentAccount$" [payload]="payload"></app-polkascan-signer-extrinsic-qr>
+                    <button class="button is-link" (click)="scanSignature()">Scan signature QR</button>
+                    <button class="button is-link" (click)="cancelQRcode()">Cancel</button>
+<!--                    <textarea class="textarea result" placeholder="">{{ result | json }}</textarea>-->
                   </div>
                 </div>
             </div>
         </div>
     </div>
   </section>
-
+<section>
+  <div class="card">
+    <div class="scanner-container">
+      <app-polkascan-signer-signature *ngIf="enableSignatureScanner" (signatureScanned)="onSignatureScanned($event)" [device]="currentDevice" (camerasFound)="onCamerasFound($event)"></app-polkascan-signer-signature>
+    </div>
+    <button class="button is-link" *ngIf="enableSignatureScanner" (click)="cancelScanning()">Cancel</button>
+  </div>
+</section>

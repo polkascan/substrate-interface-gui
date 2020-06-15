@@ -1,0 +1,25 @@
+<ng-container *ngIf="hasDevices === undefined">
+
+  <h2>Couldn't check for devices.</h2>
+
+  <blockquote>
+    This may be caused by some security error.
+  </blockquote>
+
+</ng-container>
+
+<ng-container *ngIf="hasDevices === false">
+
+  <h2>No devices were found.</h2>
+
+  <blockquote>
+    I believe your device has no media devices attached to.
+  </blockquote>
+
+</ng-container>
+
+<zxing-scanner [autostart]="true" [(device)]="device" (scanSuccess)="onScanResult($event)"
+               (permissionResponse)="onHasPermission($event)"
+               (camerasFound)="onCamerasFound($event)"
+               (camerasNotFound)="onCamerasNotFound()">
+</zxing-scanner>

@@ -21,10 +21,13 @@
  *
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {RpcRequestParam} from '../../classes/param.class';
 import {SubstrateApiService} from '../../services/substrate-api.service';
 import {isNumeric} from 'rxjs/internal-compatibility';
+import {SubstrateAccount} from '../../classes/substrate-account.class';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-extrinsics',
@@ -35,12 +38,38 @@ export class ExtrinsicsComponent implements OnInit {
 
   public callFunctions = [];
   public selectedCallFunction;
+
   public result: string;
+  public extrinsicHash: string;
+  public errorMessage: string;
+
   public rpcParams: RpcRequestParam[] = [];
 
-  constructor(private substrateApiService: SubstrateApiService) { }
+  public enableAddressScanner = false;
+  public enableSignatureScanner = false;
+
+  public scanDevices: MediaDeviceInfo[];
+  public currentDevice: MediaDeviceInfo = null;
+
+  public currentAccount: SubstrateAccount;
+  public currentAccount$: Observable<SubstrateAccount>;
+
+  public payload = new BehaviorSubject<string>(null);
+
+  constructor(
+    private substrateApiService: SubstrateApiService,
+    @Inject(LOCAL_STORAGE) private storage: StorageService
+  ) { }
 
   ngOnInit() {
+
+    this.extrinsicHash = null;
+    this.errorMessage = null;
+
+    this.currentAccount$ = this.substrateApiService.getAccount();
+
+    this.substrateApiService.getAccount().subscribe(account => this.currentAccount = account);
+
     this.substrateApiService.executeRPCRequest('runtime_getMetadataCallFunctions').subscribe(data => {
       this.callFunctions = data.result;
       this.selectedCallFunction = this.callFunctions[0];
@@ -67,7 +96,6 @@ export class ExtrinsicsComponent implements OnInit {
     } else {
       param.value = event.target.value;
     }
-    console.log(param.value);
   }
 
   selectCallFunction(e) {
@@ -75,13 +103,41 @@ export class ExtrinsicsComponent implements OnInit {
     this.updateParamFields();
   }
 
-   composeCall() {
+  startScanning() {
+    this.enableAddressScanner = true;
+  }
 
+  cancelScanning() {
+    this.currentDevice = null;
+    this.enableAddressScanner = false;
+    this.enableSignatureScanner = false;
+  }
+
+  onAddressScanned(account: SubstrateAccount) {
+
+    console.log('result scanned', account.ss58Address);
+
+    this.cancelScanning();
+
+    if (account.genesisHash === this.substrateApiService.genesisHash) {
+     this.substrateApiService.setAccount(account);
+     this.storage.set('account', account);
+    } else {
+      this.errorMessage = 'Genesis hash of scanned account doesn\'t match genesis hash of node';
+    }
+  }
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
+    console.log('devices found', devices);
+    this.scanDevices = devices;
+    this.currentDevice = this.scanDevices[0];
+  }
+
+  getCallParams() {
     const params = {};
 
     for (const param of this.rpcParams) {
 
-      if (param.type === 'numeric' ||  isNumeric(param.value)) {
+      if (param.type !== 'Bytes' && (param.type === 'numeric' ||  isNumeric(param.value))) {
          if (!param.value) {
            params[param.name] = null;
          } else {
@@ -96,15 +152,68 @@ export class ExtrinsicsComponent implements OnInit {
          }
        }
     }
+    return params;
+  }
+
+  requestSignaturePayload() {
+    this.errorMessage = '';
 
     this.substrateApiService.executeRPCRequest(
-      'runtime_composeCall',
-      [this.selectedCallFunction.module_name, this.selectedCallFunction.call_name, params]
+      'runtime_createSignaturePayload',
+      [
+        this.currentAccount.ss58Address,
+        this.selectedCallFunction.module_name,
+        this.selectedCallFunction.call_name,
+        this.getCallParams()
+      ]
     ).subscribe(data => {
-      this.result = data.result || '<no result>';
-      if (data.error) {
-        alert('RPC Error: ' + data.error.message);
+      if (data.result) {
+        this.result = data.result || '<no result>';
+        this.payload.next(data.result);
       }
+
+      if (data.error) {
+        this.errorMessage = data.error.message;
+      }
+    }, error => {
+      this.errorMessage = 'RPC error: ' + error.statusText;
+    });
+  }
+
+  cancelQRcode() {
+    this.result = null;
+  }
+
+  scanSignature() {
+    this.result = null;
+    this.enableSignatureScanner = true;
+  }
+
+  onSignatureScanned(signature: string) {
+    console.log('signature', signature);
+    this.currentDevice = null;
+    this.cancelScanning();
+
+    this.errorMessage = '';
+
+    this.substrateApiService.executeRPCRequest(
+      'runtime_submitExtrinsic',
+      [
+        this.currentAccount.ss58Address,
+        this.selectedCallFunction.module_name,
+        this.selectedCallFunction.call_name,
+        this.getCallParams(),
+        signature
+      ]
+    ).subscribe(data => {
+      console.log('submitResult', data);
+      if (data.result) {
+        this.extrinsicHash = data.result.extrinsic_hash;
+      } else {
+        this.errorMessage = data.error ? data.error.message : 'An unknown error occured';
+      }
+    }, error => {
+      this.errorMessage = 'RPC error: ' + error.statusText;
     });
   }
 }

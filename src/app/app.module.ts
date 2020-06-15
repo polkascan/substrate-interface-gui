@@ -32,6 +32,11 @@ import { ChainStateComponent } from './pages/chain-state/chain-state.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import { HomeComponent } from './pages/home/home.component';
+import {QrCodeModule} from 'ng-qrcode';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import { PolkascanSignerAddressComponent } from './components/polkascan-signer-address/polkascan-signer-address.component';
+import { PolkascanSignerSignatureComponent } from './components/polkascan-signer-signature/polkascan-signer-signature.component';
+import { PolkascanSignerExtrinsicQRComponent } from './components/polkascan-signer-extrinsic-qr/polkascan-signer-extrinsic-qr.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +44,18 @@ import { HomeComponent } from './pages/home/home.component';
     RpcCallsComponent,
     ExtrinsicsComponent,
     ChainStateComponent,
-    HomeComponent
+    HomeComponent,
+    PolkascanSignerAddressComponent,
+    PolkascanSignerSignatureComponent,
+    PolkascanSignerExtrinsicQRComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    QrCodeModule,
+    ZXingScannerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

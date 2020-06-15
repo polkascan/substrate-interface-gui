@@ -34,12 +34,18 @@ export class RpcCallsComponent implements OnInit {
 
   public rpcMethods = ['Loading..'];
   public selectedRpcMethod: string;
+
   public result: string;
+  public errorMessage: string;
+
   public rpcParams: RpcRequestParam[] = [];
 
   constructor(private substrateApiService: SubstrateApiService) { }
 
   ngOnInit() {
+
+    this.errorMessage = null;
+
     this.substrateApiService.getRpcMethods().subscribe(data => {
       this.rpcMethods = data.result.methods;
       this.selectedRpcMethod = this.rpcMethods[0];
@@ -65,7 +71,8 @@ export class RpcCallsComponent implements OnInit {
               ]
         }});
         break;
-      case 'runtime_composeCall':
+      case 'runtime_createSignaturePayload':
+        this.rpcParams.push({type: 'string', name: 'Account', value: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
         this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
         this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: {
@@ -73,6 +80,17 @@ export class RpcCallsComponent implements OnInit {
                           value: 4000000000
                         }
         });
+        break;
+      case 'runtime_submitExtrinsic':
+        this.rpcParams.push({type: 'string', name: 'Account', value: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
+        this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
+        this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
+        this.rpcParams.push({type: 'array', name: 'Parameters', value: {
+                          dest: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
+                          value: 4000000000
+                        }
+        });
+        this.rpcParams.push({type: 'string', name: 'Signature', value: '0x84e092bdf924b4d67adf896284ae8854e504d5c6210ff4168716004a9b82b32b84ff7a9952c93fe51486faf7229b4e1f76875d06058094a11e17e85b3fc96e8c'});
         break;
       case 'runtime_decodeScale':
         this.rpcParams.push({type: 'string', name: 'Type String', value: 'BlockNumber'});
@@ -83,8 +101,8 @@ export class RpcCallsComponent implements OnInit {
         this.rpcParams.push({type: 'dict', name: 'Value', value: {height: 345678, index: 5}});
         break;
       case 'runtime_getState':
-        this.rpcParams.push({type: 'string', name: 'Module', value: 'Balances'});
-        this.rpcParams.push({type: 'string', name: 'Storage function', value: 'FreeBalance'});
+        this.rpcParams.push({type: 'string', name: 'Module', value: 'System'});
+        this.rpcParams.push({type: 'string', name: 'Storage function', value: 'Account'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: ['EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk']});
         this.rpcParams.push({type: 'BlockHashOrId', name: 'Block hash or ID', value: null});
         break;
@@ -138,6 +156,8 @@ export class RpcCallsComponent implements OnInit {
 
   submitCall() {
 
+    this.errorMessage = null;
+
     const params = [];
 
     for (const param of this.rpcParams) {
@@ -162,8 +182,10 @@ export class RpcCallsComponent implements OnInit {
 
       this.result = data.result;
       if (data.error) {
-        alert('RPC Error: ' + data.error.message);
+        this.errorMessage = 'RPC Error: ' + data.error.message;
       }
+    }, error => {
+      this.errorMessage = 'RPC error: ' + error.statusText;
     });
   }
 

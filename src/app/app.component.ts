@@ -21,19 +21,45 @@
  *
  */
 
-import { Component } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {LOCAL_STORAGE, StorageService} from 'ngx-webstorage-service';
+import {SubstrateApiService} from './services/substrate-api.service';
+import {Observable, Subscription} from 'rxjs';
+import {SubstrateAccount} from './classes/substrate-account.class';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Polkascan Substrate Interface';
 
   public showNavigation = false;
+  public account$: Observable<SubstrateAccount>;
+
+  constructor(
+    private substrateApiService: SubstrateApiService,
+    @Inject(LOCAL_STORAGE) private storage: StorageService
+  ) {}
 
   toggleNavigation() {
     this.showNavigation = !this.showNavigation;
+  }
+
+  ngOnInit(): void {
+    console.log('Account in local store', this.storage.get('account'));
+    this.substrateApiService.setAccount(this.storage.get('account'));
+
+    this.substrateApiService.setChainProperties();
+
+    console.log(this.substrateApiService);
+
+    this.account$ = this.substrateApiService.getAccount();
+  }
+
+  ngOnDestroy() {
+      // unsubscribe to ensure no memory leaks
+      // this.accountSubscription.unsubscribe();
   }
 }

@@ -1,0 +1,26 @@
+.doc {
+  white-space: pre ;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.scanner-container {
+  margin: 10px;
+  max-width: 600px;
+
+  .button {
+    padding: 10px;
+  }
+}
+
+.button {
+  margin-right: 10px;
+}
+
+.current-account {
+
+  padding-top: 10px;
+  padding-right: 10px;
+  display: inline-block;
+}
+

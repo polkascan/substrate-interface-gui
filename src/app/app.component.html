@@ -18,11 +18,15 @@
                     <a class="navbar-item" routerLink="/chain-state" routerLinkActive="is-active">
                       <span class="icon"><i class="fa fa-database"></i></span> Chain state
                     </a>
-                    <a class="navbar-item" routerLink="/compose-call" routerLinkActive="is-active">
-                      <span class="icon"><i class="fa fa-file-alt"></i></span> Compose Call
+                    <a class="navbar-item" routerLink="/create-extrinsic" routerLinkActive="is-active">
+                      <span class="icon"><i class="fa fa-file-signature"></i></span> Create extrinsic
                     </a>
                 </div>
-
+                <div class="navbar-end">
+                    <div class="navbar-item" *ngIf="account$ | async as account">
+                      <span class="icon"><i class="fa fa-user"></i></span> {{ account.ss58Address }}
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
