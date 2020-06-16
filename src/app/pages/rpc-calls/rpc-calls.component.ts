@@ -24,6 +24,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SubstrateApiService} from '../../services/substrate-api.service';
 import { RpcRequestParam } from 'src/app/classes/param.class';
+import {SubstrateAccount} from '../../classes/substrate-account.class';
 
 @Component({
   selector: 'app-rpc-calls',
@@ -40,9 +41,13 @@ export class RpcCallsComponent implements OnInit {
 
   public rpcParams: RpcRequestParam[] = [];
 
+  public currentAccount: SubstrateAccount;
+
   constructor(private substrateApiService: SubstrateApiService) { }
 
   ngOnInit() {
+
+    this.substrateApiService.getAccount().subscribe(account => this.currentAccount = account);
 
     this.errorMessage = null;
 
@@ -72,21 +77,21 @@ export class RpcCallsComponent implements OnInit {
         }});
         break;
       case 'runtime_createSignaturePayload':
-        this.rpcParams.push({type: 'string', name: 'Account', value: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
+        this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
         this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
         this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: {
-                          dest: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
+                          dest: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
                           value: 4000000000
                         }
         });
         break;
       case 'runtime_submitExtrinsic':
-        this.rpcParams.push({type: 'string', name: 'Account', value: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
+        this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
         this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
         this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: {
-                          dest: 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
+                          dest: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
                           value: 4000000000
                         }
         });
@@ -103,7 +108,7 @@ export class RpcCallsComponent implements OnInit {
       case 'runtime_getState':
         this.rpcParams.push({type: 'string', name: 'Module', value: 'System'});
         this.rpcParams.push({type: 'string', name: 'Storage function', value: 'Account'});
-        this.rpcParams.push({type: 'array', name: 'Parameters', value: ['EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk']});
+        this.rpcParams.push({type: 'array', name: 'Parameters', value: this.currentAccount ? [this.currentAccount.ss58Address] : ['EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk']});
         this.rpcParams.push({type: 'BlockHashOrId', name: 'Block hash or ID', value: null});
         break;
       case 'runtime_getBlock':

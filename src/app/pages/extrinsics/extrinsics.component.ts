@@ -129,7 +129,7 @@ export class ExtrinsicsComponent implements OnInit {
   onCamerasFound(devices: MediaDeviceInfo[]): void {
     console.log('devices found', devices);
     this.scanDevices = devices;
-    this.currentDevice = this.scanDevices[0];
+    this.currentDevice = this.scanDevices[this.scanDevices.length - 1];
   }
 
   getCallParams() {

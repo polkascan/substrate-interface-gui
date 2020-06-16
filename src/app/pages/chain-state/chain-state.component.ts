@@ -25,6 +25,7 @@ import { Component, OnInit } from '@angular/core';
 import {RpcRequestParam} from '../../classes/param.class';
 import {SubstrateApiService} from '../../services/substrate-api.service';
 import {isNumeric} from 'rxjs/internal-compatibility';
+import {SubstrateAccount} from '../../classes/substrate-account.class';
 
 @Component({
   selector: 'app-chain-state',
@@ -39,9 +40,14 @@ export class ChainStateComponent implements OnInit {
   public result: string;
   public rpcParams: RpcRequestParam[] = [];
 
+  public currentAccount: SubstrateAccount;
+
   constructor(private substrateApiService: SubstrateApiService) { }
 
   ngOnInit() {
+
+    this.substrateApiService.getAccount().subscribe(account => this.currentAccount = account);
+
     this.substrateApiService.executeRPCRequest('runtime_getMetadataStorageFunctions').subscribe(data => {
       this.storageFunctions = data.result;
       this.selectedStorageFunction = this.storageFunctions[0];
@@ -61,7 +67,7 @@ export class ChainStateComponent implements OnInit {
      if (this.selectedStorageFunction.type_key1) {
 
        if (this.selectedStorageFunction.type_key1 === 'AccountId') {
-          value = 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk';
+          value = this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk';
        }
 
        this.rpcParams.push({type: 'string', name: this.selectedStorageFunction.type_key1, value});
@@ -70,7 +76,7 @@ export class ChainStateComponent implements OnInit {
      if (this.selectedStorageFunction.type_key2) {
 
        if (this.selectedStorageFunction.type_key2 === 'AccountId') {
-          value = 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk';
+          value = this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk';
        }
 
        this.rpcParams.push({type: 'string', name: this.selectedStorageFunction.type_key2, value});
