@@ -39,6 +39,7 @@
                   <label class="label">{{ param.name }}</label>
                   <div class="control">
                     <input *ngIf="param.type == 'string' || param.type == 'BlockHashOrId'" class="input" type="text" [(ngModel)]="param.value">
+                    <input *ngIf="param.type == 'number'" class="input" type="number" [(ngModel)]="param.value">
                     <textarea *ngIf="param.type == 'dict' || param.type == 'array'" class="textarea" (change)="updateParamValue($event, param)">{{ param.value | json }}</textarea>
                   </div>
                 </div>

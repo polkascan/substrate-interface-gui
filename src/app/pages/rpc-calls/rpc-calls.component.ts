@@ -77,6 +77,7 @@ export class RpcCallsComponent implements OnInit {
         }});
         break;
       case 'runtime_createSignaturePayload':
+      case 'runtime_createExternalSignerPayload':
         this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
         this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
         this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
@@ -141,11 +142,26 @@ export class RpcCallsComponent implements OnInit {
       case 'runtime_removeCustomType':
         this.rpcParams.push({type: 'string', name: 'Custom Type string', value: 'MyCustomType'});
         break;
+      case 'keypair_create':
+        this.rpcParams.push({type: 'number', name: 'Number of words (12 (default), 15, 18, 21 or 24)', value: 12});
+        break;
+      case 'keypair_inspect':
+        this.rpcParams.push({type: 'string', name: 'Account mnemonic', value: 'hope advance orange pool weather tuition caught notable letter calm panda approve'});
+        break;
+      case 'keypair_sign':
+        this.rpcParams.push({type: 'string', name: 'Account mnemonic', value: 'hope advance orange pool weather tuition caught notable letter calm panda approve'});
+        this.rpcParams.push({type: 'string', name: 'Data (hex or string)', value: 'test'});
+        break;
+      case 'keypair_verify':
+        this.rpcParams.push({type: 'string', name: 'Account address', value: 'D2yeEhriVJ4CowCV4C54BcyEsh3kr5ysrJTPFr2FdMyK2t1'});
+        this.rpcParams.push({type: 'string', name: 'Data (hex or string)', value: 'test'});
+        this.rpcParams.push({type: 'string', name: 'Signature', value: '0x8e09d1af9ad0e2b5a9431646216db14e2196681d6d5656e3b06ee948f821ff76201ed033ae381b656aeb986c57109febe7da5a29a5184ce75c773d2774d09e8a'});
+        break;
     }
   }
 
   isNewRpcMethod(value) {
-    return !value || value.startsWith('runtime_');
+    return !value || value.startsWith('runtime_') || value.startsWith('keypair_');
   }
 
   selectRpcMethod(e) {

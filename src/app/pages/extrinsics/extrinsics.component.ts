@@ -159,7 +159,7 @@ export class ExtrinsicsComponent implements OnInit {
     this.errorMessage = '';
 
     this.substrateApiService.executeRPCRequest(
-      'runtime_createSignaturePayload',
+      'runtime_createExternalSignerPayload',
       [
         this.currentAccount.ss58Address,
         this.selectedCallFunction.module_name,
@@ -169,7 +169,7 @@ export class ExtrinsicsComponent implements OnInit {
     ).subscribe(data => {
       if (data.result) {
         this.result = data.result || '<no result>';
-        this.payload.next(data.result);
+        this.payload.next(data.result.signature_payload);
       }
 
       if (data.error) {
