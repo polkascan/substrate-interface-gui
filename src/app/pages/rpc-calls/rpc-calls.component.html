@@ -20,10 +20,24 @@
         <div class="card-table">
             <div class="content content-container">
                 <div class="field">
+                  <label class="label">Proxy RPC endpoint</label>
+                  <div class="control">
+                    {{ rpcEndpoint }}
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  <section class="main-content">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+                <div class="field">
                   <label class="label">Method</label>
                   <div class="control">
                     <div class="select">
-                      <select (change)="selectRpcMethod($event)">
+                      <select (change)="selectRpcMethod($event)" [(ngModel)]="selectedRpcMethod">
                         <option *ngFor="let method of rpcMethods" [value]="method"><span *ngIf="isNewRpcMethod(method)"> 🆕 </span>{{ method }}</option>
                       </select>
                     </div>

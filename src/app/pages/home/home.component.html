@@ -10,20 +10,31 @@
           </div>
       </div>
   </section>
+  <section class="main-content">
+    <div class="card">
+        <div class="card-table">
+            <div class="content content-container">
+                <div class="field">
+                  <label class="label">Proxy RPC endpoint</label>
+                  <div class="control">
+                    {{ rpcEndpoint }}
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
   <section class="info-tiles">
       <div class="tile is-ancestor has-text-centered">
 
             <div class="tile is-parent">
-
               <article class="tile is-child box">
                 <a routerLink="/rpc-calls">
                 <p class="title"><i class="fa fa-download fa-2x"></i></p>
                   <p class="subtitle">RPC calls</p>
                 </a>
               </article>
-
             </div>
-
 
             <div class="tile is-parent">
                 <article class="tile is-child box">
@@ -34,12 +45,20 @@
                 </article>
             </div>
 
-
             <div class="tile is-parent">
                 <article class="tile is-child box">
                     <a routerLink="/create-extrinsic">
                     <p class="title"><i class="fa fa-file-signature fa-2x"></i></p>
                     <p class="subtitle">Create extrinsic</p>
+                    </a>
+                </article>
+            </div>
+
+            <div class="tile is-parent">
+                <article class="tile is-child box">
+                    <a routerLink="/sign-message">
+                    <p class="title"><i class="fa fa-signature fa-2x"></i></p>
+                    <p class="subtitle">Sign message</p>
                     </a>
                 </article>
             </div>

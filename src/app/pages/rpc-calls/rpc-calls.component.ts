@@ -25,6 +25,7 @@ import { Component, OnInit } from '@angular/core';
 import {SubstrateApiService} from '../../services/substrate-api.service';
 import { RpcRequestParam } from 'src/app/classes/param.class';
 import {SubstrateAccount} from '../../classes/substrate-account.class';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-rpc-calls',
@@ -35,6 +36,7 @@ export class RpcCallsComponent implements OnInit {
 
   public rpcMethods = ['Loading..'];
   public selectedRpcMethod: string;
+  public rpcEndpoint: string;
 
   public result: string;
   public errorMessage: string;
@@ -46,6 +48,7 @@ export class RpcCallsComponent implements OnInit {
   constructor(private substrateApiService: SubstrateApiService) { }
 
   ngOnInit() {
+    this.rpcEndpoint = environment.substrateApiUrl;
 
     this.substrateApiService.getAccount().subscribe(account => this.currentAccount = account);
 
@@ -53,7 +56,7 @@ export class RpcCallsComponent implements OnInit {
 
     this.substrateApiService.getRpcMethods().subscribe(data => {
       this.rpcMethods = data.result.methods;
-      this.selectedRpcMethod = this.rpcMethods[0];
+      this.selectedRpcMethod = 'runtime_getBlock';
       this.updateParamFields();
     });
   }
