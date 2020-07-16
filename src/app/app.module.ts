@@ -37,6 +37,7 @@ import {ZXingScannerModule} from '@zxing/ngx-scanner';
 import { PolkascanSignerAddressComponent } from './components/polkascan-signer-address/polkascan-signer-address.component';
 import { PolkascanSignerSignatureComponent } from './components/polkascan-signer-signature/polkascan-signer-signature.component';
 import { PolkascanSignerExtrinsicQRComponent } from './components/polkascan-signer-extrinsic-qr/polkascan-signer-extrinsic-qr.component';
+import { SignMessageComponent } from './pages/sign-message/sign-message.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { PolkascanSignerExtrinsicQRComponent } from './components/polkascan-sign
     HomeComponent,
     PolkascanSignerAddressComponent,
     PolkascanSignerSignatureComponent,
-    PolkascanSignerExtrinsicQRComponent
+    PolkascanSignerExtrinsicQRComponent,
+    SignMessageComponent
   ],
   imports: [
     BrowserModule,

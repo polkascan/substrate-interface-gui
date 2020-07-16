@@ -21,6 +21,9 @@
                     <a class="navbar-item" routerLink="/create-extrinsic" routerLinkActive="is-active">
                       <span class="icon"><i class="fa fa-file-signature"></i></span> Create extrinsic
                     </a>
+                    <a class="navbar-item" routerLink="/sign-message" routerLinkActive="is-active">
+                      <span class="icon"><i class="fa fa-signature"></i></span> Sign message
+                    </a>
                 </div>
                 <div class="navbar-end">
                     <div class="navbar-item" *ngIf="account$ | async as account">
