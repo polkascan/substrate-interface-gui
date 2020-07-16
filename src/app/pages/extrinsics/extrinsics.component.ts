@@ -115,9 +115,15 @@ export class ExtrinsicsComponent implements OnInit {
 
   onAddressScanned(account: SubstrateAccount) {
 
-    console.log('result scanned', account.ss58Address);
+
 
     this.cancelScanning();
+
+    if (account.genesisHash === '') {
+      account.genesisHash = this.substrateApiService.genesisHash;
+    }
+
+    console.log('account scanned', account);
 
     if (account.genesisHash === this.substrateApiService.genesisHash) {
      this.substrateApiService.setAccount(account);
