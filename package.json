@@ -26,6 +26,7 @@
     "buffer": "^5.6.0",
     "bulma": "^0.8.0",
     "font-awesome": "^4.7.0",
+    "ng-json-view": "^4.0.0",
     "ng-qrcode": "^3.1.0",
     "ngx-webstorage-service": "^4.1.0",
     "qrcode": "^1.4.4",

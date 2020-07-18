@@ -38,6 +38,7 @@ import { PolkascanSignerAddressComponent } from './components/polkascan-signer-a
 import { PolkascanSignerSignatureComponent } from './components/polkascan-signer-signature/polkascan-signer-signature.component';
 import { PolkascanSignerExtrinsicQRComponent } from './components/polkascan-signer-extrinsic-qr/polkascan-signer-extrinsic-qr.component';
 import { SignMessageComponent } from './pages/sign-message/sign-message.component';
+import {NgxJsonViewModule} from 'ng-json-view';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { SignMessageComponent } from './pages/sign-message/sign-message.componen
     HttpClientModule,
     FormsModule,
     QrCodeModule,
-    ZXingScannerModule
+    ZXingScannerModule,
+    NgxJsonViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]

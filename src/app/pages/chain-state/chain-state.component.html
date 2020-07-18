@@ -61,7 +61,7 @@
               <div class="field">
                   <label class="label">Result</label>
                   <div class="control">
-                    <textarea class="textarea result" placeholder="">{{ result | json }}</textarea>
+                    <ngx-json-view class="json-view" [data]="result" levelOpen="3"></ngx-json-view>
                   </div>
                 </div>
             </div>
