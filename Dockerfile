@@ -30,11 +30,16 @@ RUN npm run ng build -- --prod --output-path=dist --base-href=${BASE_HREF}
 
 FROM nginx:1.14.1-alpine
 
+## Allow for various nginx proxy configuration
+ARG NGINX_CONF=nginx/prod.conf
+ENV NGINX_CONF=$NGINX_CONF
+
 ## Remove default nginx configs
 RUN rm -rf /etc/nginx/conf.d/*
 
 ## Copy our default nginx config
-COPY nginx/prod.conf /etc/nginx/conf.d/
+#COPY nginx/prod.conf /etc/nginx/conf.d/
+COPY ${NGINX_CONF} /etc/nginx/conf.d/
 
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
