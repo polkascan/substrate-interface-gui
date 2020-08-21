@@ -20,7 +20,10 @@ COPY . .
 ARG SUBSTRATE_API_URL=http://127.0.0.1:8080/rpc/
 ENV SUBSTRATE_API_URL=$SUBSTRATE_API_URL
 
-RUN npm run ng build -- --prod --output-path=dist
+ARG BASE_HREF=/
+ENV BASE_HREF=$BASE_HREF
+
+RUN npm run ng build -- --prod --output-path=dist --base-href=${BASE_HREF}
 
 
 ### STAGE 2: Setup ###
