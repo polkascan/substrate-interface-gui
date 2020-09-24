@@ -49,7 +49,7 @@ export class PolkascanSignerExtrinsicQRComponent implements OnInit, OnDestroy {
     }
   }
 
-  async generateQR(account: SubstrateAccount, hexPayload: string) {
+  async generateQR(account: SubstrateAccount, hexPayload: string): Promise<boolean> {
 
     const framePayload = '00' + // multipart
         '0001' + // length
@@ -64,8 +64,10 @@ export class PolkascanSignerExtrinsicQRComponent implements OnInit, OnDestroy {
     try {
       // @ts-ignore
       this.qrcode = await QRCode.toDataURL( [{ data: this.fromHexString(framePayload), mode: 'byte' }]);
+      return true;
     } catch (err) {
       console.error(err);
+      return false;
     }
   }
 

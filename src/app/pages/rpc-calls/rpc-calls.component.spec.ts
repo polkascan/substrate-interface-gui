@@ -24,7 +24,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RpcCallsComponent } from './rpc-calls.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('RpcCallsComponent', () => {
   let component: RpcCallsComponent;
