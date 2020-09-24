@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignMessageComponent } from './sign-message.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('SignMessageComponent', () => {
   let component: SignMessageComponent;
@@ -8,7 +9,8 @@ describe('SignMessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SignMessageComponent ]
+      declarations: [ SignMessageComponent ],
+      imports: [HttpClientTestingModule]
     })
     .compileComponents();
   }));

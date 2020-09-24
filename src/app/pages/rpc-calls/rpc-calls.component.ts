@@ -42,6 +42,8 @@ export class RpcCallsComponent implements OnInit {
   public errorMessage: string;
 
   public rpcParams: RpcRequestParam[] = [];
+  public callFunctions = [];
+  public selectedCallFunction;
 
   public currentAccount: SubstrateAccount;
 
@@ -57,6 +59,12 @@ export class RpcCallsComponent implements OnInit {
     this.substrateApiService.getRpcMethods().subscribe(data => {
       this.rpcMethods = data.result.methods;
       this.selectedRpcMethod = 'runtime_getBlock';
+      this.updateParamFields();
+    });
+
+    this.substrateApiService.executeRPCRequest('runtime_getMetadataCallFunctions').subscribe(data => {
+      this.callFunctions = data.result;
+      this.selectedCallFunction = this.callFunctions[1]; // default to System.remark
       this.updateParamFields();
     });
   }
@@ -82,21 +90,17 @@ export class RpcCallsComponent implements OnInit {
       case 'runtime_createSignaturePayload':
       case 'runtime_createExternalSignerPayload':
         this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
-        this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
-        this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
+        this.rpcParams.push({type: 'callFunction', name: 'Call Function', value: 'transfer'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: {
-                          dest: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
-                          value: 4000000000
+                          _remark: 'Test message'
                         }
         });
         break;
       case 'runtime_submitExtrinsic':
         this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
-        this.rpcParams.push({type: 'string', name: 'Call Module', value: 'Balances'});
-        this.rpcParams.push({type: 'string', name: 'Call Function', value: 'transfer'});
+        this.rpcParams.push({type: 'callFunction', name: 'Call Function', value: 'transfer'});
         this.rpcParams.push({type: 'array', name: 'Parameters', value: {
-                          dest: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk',
-                          value: 4000000000
+                          _remark: 'Test message'
                         }
         });
         this.rpcParams.push({type: 'string', name: 'Signature', value: '0x84e092bdf924b4d67adf896284ae8854e504d5c6210ff4168716004a9b82b32b84ff7a9952c93fe51486faf7229b4e1f76875d06058094a11e17e85b3fc96e8c'});
@@ -187,19 +191,23 @@ export class RpcCallsComponent implements OnInit {
     for (const param of this.rpcParams) {
       console.log(param.name, param.value);
       if (param.type === 'BlockHashOrId') {
-         if (!param.value) {
-           params.push(null);
-         } else {
-           params.push(+param.value);
-         }
-       } else {
+        if (!param.value) {
+          params.push(null);
+        } else {
+          params.push(+param.value);
+        }
+      } else if (param.type === 'callFunction') {
 
-         if (!param.value) {
-           params.push(null);
-         } else {
-           params.push(param.value);
-         }
+        params.push(this.selectedCallFunction.module_name);
+        params.push(this.selectedCallFunction.call_name);
+
+      } else {
+       if (!param.value) {
+         params.push(null);
+       } else {
+         params.push(param.value);
        }
+      }
     }
 
     this.substrateApiService.executeRPCRequest(this.selectedRpcMethod, params).subscribe(data => {

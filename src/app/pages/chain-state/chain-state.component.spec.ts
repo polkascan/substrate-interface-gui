@@ -24,6 +24,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChainStateComponent } from './chain-state.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('ChainStateComponent', () => {
   let component: ChainStateComponent;
@@ -31,7 +32,8 @@ describe('ChainStateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChainStateComponent ]
+      declarations: [ ChainStateComponent ],
+      imports: [HttpClientTestingModule]
     })
     .compileComponents();
   }));

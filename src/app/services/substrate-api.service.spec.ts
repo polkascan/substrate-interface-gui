@@ -24,9 +24,25 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SubstrateApiService } from './substrate-api.service';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import {HttpClient} from '@angular/common/http';
 
 describe('SubstrateApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+
+  let httpMock = HttpTestingController;
+  let httpClient = HttpClient;
+
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [SubstrateApiService]
+    });
+
+    httpMock = TestBed.get(HttpTestingController);
+    httpClient = TestBed.get(HttpClient);
+
+  });
 
   it('should be created', () => {
     const service: SubstrateApiService = TestBed.get(SubstrateApiService);

@@ -23,27 +23,30 @@ export class PolkascanSignerExtrinsicQRComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    this.accountSubscription = this.account.subscribe(account => {
+    if (this.account) {
+      this.accountSubscription = this.account.subscribe(account => {
 
-      this.currentAccount = account;
+        this.currentAccount = account;
 
-      if (this.currentAccount && this.currentPayload) {
-        this.generateQR(this.currentAccount, this.currentPayload).then( value => {
-          console.log('QR generated');
-        });
-      }
-    });
+        if (this.currentAccount && this.currentPayload) {
+          this.generateQR(this.currentAccount, this.currentPayload).then(value => {
+            console.log('QR generated');
+          });
+        }
+      });
+    }
+    if (this.payload) {
+      this.payloadSubscription = this.payload.subscribe(payload => {
 
-    this.payloadSubscription = this.payload.subscribe(payload => {
+        this.currentPayload = payload;
 
-      this.currentPayload = payload;
-
-      if (this.currentAccount && this.currentPayload) {
-        this.generateQR(this.currentAccount, this.currentPayload).then( value => {
-          console.log('QR generated');
-        });
-      }
-    });
+        if (this.currentAccount && this.currentPayload) {
+          this.generateQR(this.currentAccount, this.currentPayload).then(value => {
+            console.log('QR generated');
+          });
+        }
+      });
+    }
   }
 
   async generateQR(account: SubstrateAccount, hexPayload: string) {

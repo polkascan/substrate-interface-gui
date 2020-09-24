@@ -24,6 +24,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExtrinsicsComponent } from './extrinsics.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('ExtrinsicsComponent', () => {
   let component: ExtrinsicsComponent;
@@ -31,7 +32,8 @@ describe('ExtrinsicsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExtrinsicsComponent ]
+      declarations: [ ExtrinsicsComponent ],
+      imports: [HttpClientTestingModule]
     })
     .compileComponents();
   }));
