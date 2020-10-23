@@ -96,6 +96,7 @@ export class RpcCallsComponent implements OnInit {
                         }
         });
         break;
+      case 'runtime_createExtrinsic':
       case 'runtime_submitExtrinsic':
         this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
         this.rpcParams.push({type: 'callFunction', name: 'Call Function', value: 'transfer'});
@@ -103,6 +104,7 @@ export class RpcCallsComponent implements OnInit {
                           _remark: 'Test message'
                         }
         });
+        this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         this.rpcParams.push({type: 'string', name: 'Signature', value: '0x84e092bdf924b4d67adf896284ae8854e504d5c6210ff4168716004a9b82b32b84ff7a9952c93fe51486faf7229b4e1f76875d06058094a11e17e85b3fc96e8c'});
         break;
       case 'runtime_decodeScale':
@@ -151,18 +153,22 @@ export class RpcCallsComponent implements OnInit {
         break;
       case 'keypair_create':
         this.rpcParams.push({type: 'number', name: 'Number of words (12 (default), 15, 18, 21 or 24)', value: 12});
+        this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         break;
       case 'keypair_inspect':
         this.rpcParams.push({type: 'string', name: 'Account mnemonic', value: 'hope advance orange pool weather tuition caught notable letter calm panda approve'});
+        this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         break;
       case 'keypair_sign':
         this.rpcParams.push({type: 'string', name: 'Account mnemonic', value: 'hope advance orange pool weather tuition caught notable letter calm panda approve'});
         this.rpcParams.push({type: 'string', name: 'Data (hex or string)', value: 'test'});
+        this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         break;
       case 'keypair_verify':
         this.rpcParams.push({type: 'string', name: 'Account address', value: 'D2yeEhriVJ4CowCV4C54BcyEsh3kr5ysrJTPFr2FdMyK2t1'});
         this.rpcParams.push({type: 'string', name: 'Data (hex or string)', value: 'test'});
         this.rpcParams.push({type: 'string', name: 'Signature', value: '0x8e09d1af9ad0e2b5a9431646216db14e2196681d6d5656e3b06ee948f821ff76201ed033ae381b656aeb986c57109febe7da5a29a5184ce75c773d2774d09e8a'});
+        this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         break;
     }
   }
