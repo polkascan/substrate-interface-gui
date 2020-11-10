@@ -107,6 +107,14 @@ export class RpcCallsComponent implements OnInit {
         this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         this.rpcParams.push({type: 'string', name: 'Signature', value: '0x84e092bdf924b4d67adf896284ae8854e504d5c6210ff4168716004a9b82b32b84ff7a9952c93fe51486faf7229b4e1f76875d06058094a11e17e85b3fc96e8c'});
         break;
+      case 'runtime_getPaymentInfo':
+        this.rpcParams.push({type: 'string', name: 'Account', value: this.currentAccount ? this.currentAccount.ss58Address : 'EaG2CRhJWPb7qmdcJvy3LiWdh26Jreu9Dx6R1rXxPmYXoDk'});
+        this.rpcParams.push({type: 'callFunction', name: 'Call Function', value: 'remark'});
+        this.rpcParams.push({type: 'array', name: 'Parameters', value: {
+                          _remark: 'Test message'
+                        }
+        });
+        break;
       case 'runtime_decodeScale':
         this.rpcParams.push({type: 'string', name: 'Type String', value: 'BlockNumber'});
         this.rpcParams.push({type: 'string', name: 'SCALE hex-bytes', value: '0x020a0000'});
