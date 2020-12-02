@@ -95,6 +95,8 @@ export class RpcCallsComponent implements OnInit {
                           _remark: 'Test message'
                         }
         });
+        this.rpcParams.push({type: 'number', name: 'Tip', value: 0});
+        this.rpcParams.push({type: 'dict', name: 'Era (enter "null" for immortal)', value: {period: 256}});
         break;
       case 'runtime_createExtrinsic':
       case 'runtime_submitExtrinsic':
@@ -104,6 +106,8 @@ export class RpcCallsComponent implements OnInit {
                           _remark: 'Test message'
                         }
         });
+        this.rpcParams.push({type: 'number', name: 'Tip', value: 0});
+        this.rpcParams.push({type: 'dict', name: 'Era (enter "null" for immortal)', value: { period: 256, current: "[ enter block number used to generate signature ]"}});
         this.rpcParams.push({type: 'cryptoType', name: 'Crypto Type', value: 1});
         this.rpcParams.push({type: 'string', name: 'Signature', value: '0x84e092bdf924b4d67adf896284ae8854e504d5c6210ff4168716004a9b82b32b84ff7a9952c93fe51486faf7229b4e1f76875d06058094a11e17e85b3fc96e8c'});
         break;
